@@ -1,0 +1,6 @@
+https://github.dev/gothinkster/golang-gin-realworld-example-app/blob/master/articles/models.go
+
+
+Good ref for how to use validators with the actual models
+Ref : https://seefnasrul.medium.com/create-your-first-go-rest-api-with-jwt-authentication-in-gin-framework-dbe5bda72817
+
