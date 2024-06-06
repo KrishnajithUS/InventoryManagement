@@ -95,8 +95,8 @@ func (u User) LoginUser(username string, password string) (string, error){
 
 func (a Attendence) MarkAttendence(emp_id uint) error{
 	db := database.GetDB()
-	date  := time.Now().Format("2024-12-25")
-	a.Date, _ = time.Parse(date, "2024-12-25")
+	date  := time.Now().Format("2006-01-02")
+	a.Date, _ = time.Parse("2006-01-02", date)
 	a.EmployeeId = emp_id
 	res := db.Create(&a)
 	return res.Error
