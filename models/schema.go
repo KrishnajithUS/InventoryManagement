@@ -36,7 +36,7 @@ type Employee struct {
 	Salary       float64
 	TeamId uint
 	Username string `gorm:"size:255;not null;unique"`
-	Password string `gorm:"size:255;not null;->:false;<-:create"`
+	Password string `gorm:"size:255;not null;"`
 	Attendences []Attendence
 }
 
