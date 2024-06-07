@@ -4,19 +4,18 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
-	"encoding/hex"
+	"encoding/base64"
 	"fmt"
 )
 
 var secretKey string = "0ED8463FF7C5CE2E93309811FA892D63"
 
 func encodeToBase64(ciphertext []byte) string {
-	return hex.EncodeToString(ciphertext)
+	return base64.StdEncoding.EncodeToString(ciphertext)
 }
 
 func decodeToBytes(ciphertext string) []byte {
-	res, err := hex.DecodeString(ciphertext)
-	fmt.Println("err",err)
+	res, _ := base64.StdEncoding.DecodeString(ciphertext)
 	return res
 }
 
@@ -36,7 +35,6 @@ func Encrypt(plaintext string) (string, error) {
 	}
 	ciphertext := gcm.Seal(nonce, nonce, []byte(plaintext), nil)
 	encodeToBase64 := encodeToBase64(ciphertext)
-	fmt.Println("Cipher data,",ciphertext)
 	return encodeToBase64, nil
 
 }
@@ -44,7 +42,6 @@ func Encrypt(plaintext string) (string, error) {
 func Decrypt(cipertext string) (string, error) {
 	aes, err := aes.NewCipher([]byte(secretKey))
 	cipertextInBytes := decodeToBytes(cipertext)
-	fmt.Println(cipertextInBytes)
 	if err != nil {
 		return "", err
 	}
@@ -59,21 +56,15 @@ func Decrypt(cipertext string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	encodeToBase64 := encodeToBase64(plaintext)
-	return encodeToBase64, nil
+	return string(plaintext), nil
 }
 
 func VerifyPasswordAES(password string, hashedPassword string) error {
 	decryptedPassword, err := Decrypt(hashedPassword)
-	fmt.Println("decrypted", decodeToBytes)
-	fmt.Println("err",err)
 	if err != nil {
 		return err
 	}
-	fmt.Println("give password", encodeToBase64([]byte(password)))
-	hexPassword := encodeToBase64([]byte(password))
-	fmt.Println("decrypted",decryptedPassword)
-	if hexPassword != decryptedPassword {
+	if password != decryptedPassword {
 		return fmt.Errorf("password mismatch")
 	}
 	return nil
